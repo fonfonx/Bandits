@@ -10,7 +10,7 @@ import scipy.stats as st
 K = 3
 
 # total time
-T = 10000
+T = 100000
 
 # multiplicative constant in the UCB bias (\sqrt{UCB_constant * \log(t) / s})
 UCB_constant = 1.5
@@ -22,7 +22,8 @@ ARMS = [0] * K
 MEANS = [0] * K
 
 # choice of the arms' distributions
-ARMS[0] = st.truncnorm(0, 5)
+# ARMS[0] = st.truncnorm(0, 5)
+ARMS[0] = st.expon(scale = 1. / 2.5)
 ARMS[1] = st.bernoulli(0.3)
 ARMS[2] = st.poisson(0.5)
 # ARMS[0] = st.randint(0, 1)  # constant = 0

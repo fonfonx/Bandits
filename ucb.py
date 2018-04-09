@@ -33,7 +33,7 @@ def sample(k):
     Sample arm k
     """
 
-    return ARMS[k].rvs()
+    return float(ARMS[k].rvs())
 
 
 def update_arm(k):
@@ -73,7 +73,7 @@ def ucb():
     """
 
     init()
-    for t in range(K + 1, T + 1):
+    for t in range(K, T):
         ucb_step(t)
 
 
@@ -132,5 +132,5 @@ def plotUCB():
     # plt.plot(times, regrets_Tlog)
     plt.show()
 
-
-plotUCB()
+runUCB()
+# plotUCB()
