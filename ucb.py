@@ -3,8 +3,10 @@ Main file for UCB algorithm
 """
 
 from math import *
+import pylab as plt
 
 from constants import *
+
 
 # array with the number of times each arm has been sampled
 counters = [0] * K
@@ -14,6 +16,7 @@ emp_means = [0] * K
 
 # Gain and expected gain
 gains = [0, 0]
+
 
 def new_empirical_mean(old_mean, old_nb, value):
     """
@@ -70,23 +73,64 @@ def ucb():
     """
 
     init()
-    print(emp_means)
     for t in range(K + 1, T + 1):
         ucb_step(t)
 
 
-def regret():
+def regret(t=T):
     """
     Return the regret
     """
 
-    return BEST_MEAN * T - gains[1]
+    return BEST_MEAN * t - gains[1]
 
-ucb()
-R = regret()
 
-print('K={:d}'.format(K))
-print('Best arm: {:d} with mean {:.2f}'.format(BEST_ARM, BEST_MEAN))
-print('Means: ', MEANS)
-print('Counters: ', counters)
-print('Regret={:.2f}'.format(R))
+def runUCB():
+    """
+    Run UCB algorithm on one instance and display results
+    """
+
+    ucb()
+    R = regret()
+
+    print('K={:d}'.format(K))
+    print('Best arm: {:d} with mean {:.2f}'.format(BEST_ARM, BEST_MEAN))
+    print('Means: ', MEANS)
+    print('Counters: ', counters)
+    print('Regret={:.2f}'.format(R))
+
+
+def plotUCB():
+    """
+    Plot the regret vs T curve
+    """
+
+    regrets = [0]
+    times = [0]
+
+    init()
+    times.append(K)
+    regrets.append(regret(K))
+
+    for t in range(K + 1, T + 1):
+        ucb_step(t)
+        if t % 10 == 0:
+            times.append(t)
+            regrets.append(regret(t))
+
+    times = np.array(times)
+    regrets = np.array(regrets)
+
+    regrets_log = regrets / np.log(times)
+    regrets_Tlog = regrets / np.sqrt(np.log(times) * times)
+
+    plt.figure(1)
+    plt.plot(times, regrets)
+    plt.figure(2)
+    plt.plot(times, regrets_log)
+    # plt.figure(3)
+    # plt.plot(times, regrets_Tlog)
+    plt.show()
+
+
+plotUCB()
