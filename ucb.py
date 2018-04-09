@@ -12,8 +12,8 @@ counters = [0] * K
 # array of empirical means
 emp_means = [0] * K
 
-# Gain
-gain = [0]
+# Gain and expected gain
+gains = [0, 0]
 
 def new_empirical_mean(old_mean, old_nb, value):
     """
@@ -41,7 +41,8 @@ def update_arm(k):
     val = sample(k)
     emp_means[k] = new_empirical_mean(emp_means[k], counters[k], val)
     counters[k] += 1
-    gain[0] += val
+    gains[0] += val
+    gains[1] += MEANS[k]
 
 
 def init():
@@ -79,7 +80,7 @@ def regret():
     Return the regret
     """
 
-    return BEST_MEAN * T - gain[0]
+    return BEST_MEAN * T - gains[1]
 
 ucb()
 R = regret()
