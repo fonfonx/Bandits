@@ -132,5 +132,7 @@ def plotUCB():
     # plt.plot(times, regrets_Tlog)
     plt.show()
 
-runUCB()
-# plotUCB()
+
+if __name__ == "__main__":
+    runUCB()
+    # plotUCB()
